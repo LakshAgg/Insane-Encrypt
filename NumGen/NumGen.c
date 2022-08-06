@@ -5,14 +5,12 @@
 #include "../Shuffle/InternalShuffle.h"
 
 // a simple hashing function to generate hash value of the key
-unsigned int get_s(key k)
+unsigned int get_hash(key k)
 {
-    unsigned long rv = 0;
-    unsigned long n = 0x182BE33FFF;
+    unsigned long rv = 0x182BE33FFF;
     for (int i = 0; i < 256; i++)
     {
-        rv ^= k->map[i];
-        rv *= (unsigned long)pow((double)n, (double)i);
+        rv = (rv << 13) + rv + k->map[i] * (unsigned long) pow(131, i);
     }
     return rv;
 }
@@ -61,7 +59,7 @@ int gen_num(key k)
     // if seed has not been set
     if (!k->set_seed)
     {
-        k->seed = get_s(k);
+        k->seed = get_hash(k);
         k->set_seed = true;
         srandom(k->seed);
     }
