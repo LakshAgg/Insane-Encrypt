@@ -1,4 +1,5 @@
 /**
+ * 
  * @file Key.c
  * @author Laksh Aggarwal (aggarwallaksh54@gmail.com)
  * @version 0.1
@@ -8,6 +9,7 @@
 #include "Key.h"
 #include <stdlib.h>
 #include <time.h>
+#include <sys/random.h>
 
 void genchar(int *store, unsigned char *done, int i);
 
@@ -52,7 +54,8 @@ void genchar(int *store, unsigned char *done, int i)
     unsigned char x;
     do
     {
-        x = arc4random() % 256;
+        getentropy(&x, 1);
+        x = x % 256;
     } while (done[x]);
 
     store[i] = x;
