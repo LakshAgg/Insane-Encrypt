@@ -28,10 +28,10 @@ unsigned long get_nums_required(key k, unsigned long size, int size_each)
     // total rows including half filled
     int rows_clmns = extra == 0 ? min_num : min_num + 1;
 
-    required += rows_clmns;
-    required += size_each;
-    required += size * 2;
-    required += rows_clmns;
+    required += rows_clmns; // shuffle rows
+    required += size_each;  // change rows
+    required += rows_clmns; // shuffle columns
+    required += size;       // swap
 
     return required;
 }

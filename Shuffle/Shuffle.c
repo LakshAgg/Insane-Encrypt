@@ -41,7 +41,7 @@ void shuffle(key k, void *data, unsigned long size, int size_each, unsigned int 
     
     // swap
     for (unsigned long i = 0; i < size; i++)
-        swap(data + next_random % size, data + next_random % size);
+        swap(data + i, data + random_nums[(*(r_index))++] % size);
 }
 
 void unshuffle(key k, void *data, unsigned long size, int size_each, unsigned int *random_nums, unsigned long *r_index)
@@ -56,7 +56,7 @@ void unshuffle(key k, void *data, unsigned long size, int size_each, unsigned in
     // swap
     for (unsigned long i = size - 1; ; i--)
     {
-        swap(data + prev_random % size, data + prev_random % size);
+        swap(data + i, data + random_nums[(*(r_index))--] % size);
         if (i == 0) break;
     }
 
