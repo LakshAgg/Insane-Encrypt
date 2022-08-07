@@ -21,6 +21,19 @@ Every byte of the data is XORd depending on the original data and the key.
 ## Together
 All these are executed random number of times depending on the key:
 
-1. The key is hashed to forma single 4 byte number, which is used as a seed for the random generator.
-2. At every step of shuffling, n'th byte of key is used. Where n is generated using random().
-3. Data is xord
+### Initialize
+1. The seed of pseudo-random generator is set to the hash value of the key.
+2. The data is divided into random number of rows and columns.
+3. Data is encrypted random number of times (between max and min iterations).
+
+### Encrypt
+1. Every byte of data is mapped to another using the 256 byte key.
+2. The data is shuffled.
+3. XOR is applied on every byte with the nth element of the key. And the nth element of the key is added to the result. where n is a random number.
+4. Data is shuffled again.
+
+### Shuffle
+1. Each row is shifted by n. where n is key[random % 256] element.
+2. Complete rows are switched by n'th row. where n is key[random % 256] element.
+3. Columns are shifted by n. where n is key[random % 256] element..
+4. Each byte is swapped with some random index.
