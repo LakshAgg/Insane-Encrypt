@@ -19,18 +19,19 @@ bool iencrypt(key k, void *data, unsigned long size)
 
     unsigned long numbers_required = get_nums_required(k, size, size_each);
     numbers_required *= 2;   // shuffle is called twice every iteration
+    numbers_required += 1;   // for xor
     numbers_required *= max; // number of iterations
 
     unsigned int *random_numbers = gen_random_numbers(k, numbers_required);
     if (random_numbers == NULL)
         return false;
-    
+
     unsigned long random_index = 0;
     for (int i = 0; i < max; i++)
     {
         map(k, data, size);
         shuffle(k, data, size, size_each, random_numbers, &random_index);
-        add_xor(k, data, size);
+        add_xor(k, data, size, random_numbers, &random_index);
         shuffle(k, data, size, size_each, random_numbers, &random_index);
     }
 
@@ -51,8 +52,9 @@ bool idecrypt(key k, void *data, unsigned long size)
 
     unsigned long numbers_required = get_nums_required(k, size, size_each);
     numbers_required *= 2;   // shuffle is called twice every iteration
+    numbers_required += 1;   // for xor
     numbers_required *= max; // number of iterations
-    
+
     unsigned int *random_numbers = gen_random_numbers(k, numbers_required);
     if (random_numbers == NULL)
         return false;
@@ -61,7 +63,7 @@ bool idecrypt(key k, void *data, unsigned long size)
     for (int i = 0; i < max; i++)
     {
         unshuffle(k, data, size, size_each, random_numbers, &random_index);
-        sub_xor(k, data, size);
+        sub_xor(k, data, size, random_numbers, &random_index);
         unshuffle(k, data, size, size_each, random_numbers, &random_index);
         unmap(k, data, size);
     }

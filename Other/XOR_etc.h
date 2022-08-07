@@ -12,13 +12,17 @@
  * @param k 
  * @param data 
  * @param size 
+ * @param random_nums
+ * @param random_index
  */
-void add_xor(key k, void *data, unsigned size);
+void add_xor(key k, void *data, unsigned size, unsigned int *random_nums, unsigned long *random_index);
 
 /**
  * @param k 
  * @param data 
  * @param size 
+ * @param random_nums
+ * @param random_index
  */
-void sub_xor(key k, void *data, unsigned size);
+void sub_xor(key k, void *data, unsigned size, unsigned int *random_nums, unsigned long *random_index);
 #endif
