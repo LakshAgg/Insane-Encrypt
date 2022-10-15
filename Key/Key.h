@@ -15,6 +15,7 @@ struct s_key
 {
     unsigned char map[256];
     unsigned char unmap[256];
+    unsigned int max_iterations, min_iterations, min_row_clmn_size, max_row_clmn_size;
     unsigned int seed;
     bool set_seed;
 };

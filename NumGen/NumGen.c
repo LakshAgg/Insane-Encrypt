@@ -3,14 +3,15 @@
 #include <unistd.h>
 #include "NumGen.h"
 #include "../Shuffle/InternalShuffle.h"
+#include "Powers.h"
 
 // a simple hashing function to generate hash value of the key
-unsigned int get_hash(key k)
+static unsigned int get_hash(key k)
 {
     unsigned long rv = 0x182BE33FFF;
     for (int i = 0; i < 256; i++)
     {
-        rv = (rv << 13) + rv + k->map[i] * (unsigned long) pow(131, i);
+        rv = (rv << 13) + rv + k->map[i] * powers[i];
     }
     return rv;
 }
@@ -45,12 +46,9 @@ unsigned int *gen_random_numbers(key k, unsigned long count)
     if (nums == NULL)
         return NULL;
 
-    for (count--; ; count--)
-    {
-        nums[count] = gen_num(k);
-        if (count == 0)
-            break;
-    }
+    for (;count;)
+        nums[--count] = gen_num(k);
+    
     return nums;
 }
 

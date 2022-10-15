@@ -8,8 +8,9 @@
 
 #ifndef INTERNAL_SHUFFLE_HEADER
 #define INTERNAL_SHUFFLE_HEADER
-#include "Shuffle.h"
+#include "../NumGen/NumGen.h"
 #include "../Encrypt.h"
+#include "Shuffle.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -20,21 +21,5 @@
  * @param b
  * @return int 
  */
-int calc_size_each(int a, int b);
-
-/**
- * @brief Swaps the bytes at the given addresses
- * @param x 
- * @param y 
- */
-void swap(char *x, char *y);
-
-void shuffle_row(void *data, unsigned short size, unsigned int n);
-
-void unshuffle_row(void *data, unsigned short size, unsigned int n);
-
-void shuffle_clmn(char *data, unsigned short size, unsigned short clmns, unsigned int n);
-
-void unshuffle_clmn(char *data, unsigned short size, unsigned short clmns, unsigned int n);
-
+int calc_size_each(key k);
 #endif

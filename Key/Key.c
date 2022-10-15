@@ -11,7 +11,7 @@
 #include <time.h>
 #include <sys/random.h>
 
-void genchar(int *store, unsigned char *done, int i);
+static void genchar(int *store, unsigned char *done, int i);
 
 key generate_key()
 {
@@ -43,11 +43,17 @@ key generate_key()
 
     rv->seed = 0;
     rv->set_seed = false;
+
+    // set default values
+    rv->max_iterations = 9;
+    rv->min_iterations = 3;
+    rv->max_row_clmn_size = 10;
+    rv->min_row_clmn_size = 3;
     return rv;
 }
 
 // randomly generates a character that has not been used before
-void genchar(int *store, unsigned char *done, int i)
+static void genchar(int *store, unsigned char *done, int i)
 {
     if (store[i] != -1) return;
 
@@ -87,11 +93,17 @@ key load_key(void *k)
     // load the key
     for (int i = 0; i < 256; i++)
     {
-        rv->map[i] = ((char *)k)[i];
-        rv->unmap[((char *) k)[i]] = i;
+        rv->map[i] = ((unsigned char *)k)[i];
+        rv->unmap[((unsigned char *) k)[i]] = i;
     }
 
     rv->seed = 0;
     rv->set_seed = false;
+
+    // set default values
+    rv->max_iterations = 9;
+    rv->min_iterations = 3;
+    rv->max_row_clmn_size = 10;
+    rv->min_row_clmn_size = 3;
     return rv;
 }

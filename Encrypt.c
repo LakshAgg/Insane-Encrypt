@@ -8,14 +8,13 @@
 
 bool iencrypt(key k, void *data, unsigned long size)
 {
-
     if (size == 0 || data == NULL || k == NULL)
         return false;
 
-    int size_each = calc_size_each(gen_num(k), gen_num(k)) % size + 1;
+    int size_each = calc_size_each(k) % size + 1;
 
     // number of operations
-    int max = (gen_num(k) % (MAX_ITERATIONS - MIN_ITERATIONS)) + MIN_ITERATIONS;
+    int max = (gen_num(k) % (k->max_iterations - k->min_iterations)) + k->min_iterations;
 
     unsigned long numbers_required = get_nums_required(k, size, size_each);
     numbers_required *= 2;   // shuffle is called twice every iteration
@@ -46,9 +45,9 @@ bool idecrypt(key k, void *data, unsigned long size)
     if (size == 0 || data == NULL || k == NULL)
         return false;
 
-    int size_each = calc_size_each(gen_num(k), gen_num(k)) % size + 1;
+    int size_each = calc_size_each(k) % size + 1;
 
-    int max = (gen_num(k) % (MAX_ITERATIONS - MIN_ITERATIONS)) + MIN_ITERATIONS;
+    int max = (gen_num(k) % (k->max_iterations - k->min_iterations)) + k->min_iterations;
 
     unsigned long numbers_required = get_nums_required(k, size, size_each);
     numbers_required *= 2;   // shuffle is called twice every iteration

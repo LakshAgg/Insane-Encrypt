@@ -1,5 +1,5 @@
 #include "Shuffle.h"
-#include "InternalShuffle.h"
+#include "InternalShuffle.c"
 
 #define next_random k->map[random_nums[(*(r_index))++] % 256]
 #define prev_random k->map[random_nums[(*(r_index))--] % 256]
