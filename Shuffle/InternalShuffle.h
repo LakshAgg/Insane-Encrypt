@@ -19,7 +19,7 @@
  * @brief Generates the size for each row and columns
  * @param a
  * @param b
- * @return int 
+ * @return unsigned int 
  */
-int calc_size_each(key k);
+unsigned int calc_size_each(key k);
 #endif

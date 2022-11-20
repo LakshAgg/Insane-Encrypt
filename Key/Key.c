@@ -1,5 +1,4 @@
 /**
- * 
  * @file Key.c
  * @author Laksh Aggarwal (aggarwallaksh54@gmail.com)
  * @version 0.1
@@ -11,9 +10,10 @@
 #include <time.h>
 #include <sys/random.h>
 
-static void genchar(int *store, unsigned char *done, int i);
+static void genchar(int *store, unsigned char *done, int i, unsigned char k());
+static unsigned char get_random();
 
-key generate_key()
+key generate_key(unsigned char random_number_gen())
 {
     // allocate the memory required
     key rv = malloc(sizeof(struct s_key));
@@ -29,10 +29,13 @@ key generate_key()
         done[i] = 0;
         temp_key[i] = -1;
     }
-    
+
+    if (!random_number_gen)
+        random_number_gen = get_random;
+
     // generate the sequence
     for (int i = 0; i < 256; i++)
-        genchar((int *)temp_key, (unsigned char *)done, i);
+        genchar((int *)temp_key, (unsigned char *)done, i, random_number_gen);
     
     // copy to the key
     for (int i = 0; i < 256; i++)
@@ -47,20 +50,20 @@ key generate_key()
     // set default values
     rv->max_iterations = 9;
     rv->min_iterations = 3;
-    rv->max_row_clmn_size = 10;
-    rv->min_row_clmn_size = 3;
+    rv->max_row_size = 10;
+    rv->min_row_size = 3;
     return rv;
 }
 
 // randomly generates a character that has not been used before
-static void genchar(int *store, unsigned char *done, int i)
+static void genchar(int *store, unsigned char *done, int i, unsigned char k())
 {
     if (store[i] != -1) return;
 
     unsigned char x;
     do
     {
-        getentropy(&x, 1);
+        x = k();
         x = x % 256;
     } while (done[x]);
 
@@ -103,7 +106,36 @@ key load_key(void *k)
     // set default values
     rv->max_iterations = 9;
     rv->min_iterations = 3;
-    rv->max_row_clmn_size = 10;
-    rv->min_row_clmn_size = 3;
+    rv->max_row_size = 10;
+    rv->min_row_size = 3;
     return rv;
+}
+
+bool verify_key(key k)
+{
+    if (k->min_iterations == 0 || k->max_iterations == 0 || k->min_row_size == 0 || k->max_row_size == 0)
+        return false;
+    if (k->min_iterations == k->max_iterations || k->min_row_size == k->max_row_size)
+        return false;
+
+    char done[256];
+    for (int i = 0; i < 256; i++)
+        done[i] = 0;
+    for (int i = 0; i < 256; i++)
+    {
+        if (done[i] || k->unmap[k->map[i]] != i)
+            return false;
+        done[i] = true;
+    }
+    for (int i = 0; i < 256; i++)
+        if (done[i] != 1)
+            return false;
+    return true;
+}
+
+static unsigned char get_random()
+{
+    unsigned char x;
+    getentropy(&x, 1);
+    return x;
 }

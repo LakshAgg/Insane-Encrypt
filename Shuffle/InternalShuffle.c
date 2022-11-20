@@ -1,10 +1,16 @@
 #include "InternalShuffle.h"
 
-int calc_size_each(key k)
+unsigned int calc_size_each(key k)
 {
-    return (gen_num(k) % (k->max_iterations - k->min_iterations + 1)) + k->min_iterations;
+    return (gen_num(k) % (k->max_row_size - k->min_row_size + 1)) + k->min_row_size;
 }
 
+/**
+ * @brief Shifts the data in row by n.
+ * @param data Index of starting byte of the row
+ * @param size Number of bytes in the row
+ * @param n
+ */
 static void shuffle_row(void *data, unsigned short size, unsigned int n)
 {
     n = n % size;
@@ -16,6 +22,12 @@ static void shuffle_row(void *data, unsigned short size, unsigned int n)
     memcpy(data, temp, n);
 }
 
+/**
+ * @brief Unshifts the row by n
+ * @param data Index of starting byte of the row
+ * @param size Number of bytes in the row
+ * @param n 
+ */
 static void unshuffle_row(void *data, unsigned short size, unsigned int n)
 {
     n = n % size;
@@ -27,7 +39,14 @@ static void unshuffle_row(void *data, unsigned short size, unsigned int n)
     memcpy(data + size - n, temp, n);
 }
 
-static void shuffle_clmn(char *data, unsigned short size, unsigned short clmns, unsigned int n)
+/**
+ * @brief Shifts data in columns by n.
+ * @param data Starting byte of the column
+ * @param size Number of bytes in each row
+ * @param clmns Number of rows.
+ * @param n 
+ */
+static void shuffle_clmn(char *data, unsigned short size, unsigned long clmns, unsigned int n)
 {
     n = n % clmns;
     if (n == 0)
@@ -43,7 +62,15 @@ static void shuffle_clmn(char *data, unsigned short size, unsigned short clmns, 
         data[i * size] = temp[i];
 }
 
-static void unshuffle_clmn(char *data, unsigned short size, unsigned short clmns, unsigned int n)
+
+/**
+ * @brief Unshifts data in columns by n.
+ * @param data Starting byte of the column
+ * @param size Number of bytes in each row
+ * @param clmns Number of rows.
+ * @param n 
+ */
+static void unshuffle_clmn(char *data, unsigned short size, unsigned long clmns, unsigned int n)
 {
     n = n % clmns;
     if (n == 0)

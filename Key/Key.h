@@ -15,7 +15,7 @@ struct s_key
 {
     unsigned char map[256];
     unsigned char unmap[256];
-    unsigned int max_iterations, min_iterations, min_row_clmn_size, max_row_clmn_size;
+    unsigned int max_iterations, min_iterations, min_row_size, max_row_size;
     unsigned int seed;
     bool set_seed;
 };
@@ -23,9 +23,10 @@ typedef struct s_key * key;
 
 /**
  * @brief Generates a random key.
+ * @param random_number_gen function which returns a random unsigned char
  * @return key | to be freed by using free() from stdlib.h
  */
-key generate_key();
+key generate_key(unsigned char random_number_gen());
 
 /**
  * @brief Returns the key in form of an array of 256 bytes.
@@ -34,8 +35,16 @@ key generate_key();
  */
 void *get_key(key k);
 
+
 /**
- * @brief Loads the key into the key struct.
+ * @brief Checks if key is valid.
+ * @param k 
+ * @return bool 
+ */
+bool verify_key(key k);
+
+/**
+ * @brief Loads the key into the key struct. Warning: load_key does not verify the key.
  * @param k 
  * @return key | to be freed by using free() from stdlib.h
  */

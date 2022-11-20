@@ -17,7 +17,7 @@
  * @param random_nums
  * @param r_index
  */
-void shuffle(key k, void *data, unsigned long size, int size_each, unsigned int *random_nums, unsigned long *r_index);
+void shuffle(key k, void *data, unsigned long size, unsigned int size_each, unsigned int *random_nums, unsigned long *r_index);
 
 /**
  * @brief Undoes the effect of shuffle using the key k.
@@ -28,5 +28,11 @@ void shuffle(key k, void *data, unsigned long size, int size_each, unsigned int 
  * @param random_nums
  * @param r_index
  */
-void unshuffle(key k, void *data, unsigned long size, int size_each, unsigned int *random_nums, unsigned long *r_index);
+void unshuffle(key k, void *data, unsigned long size, unsigned int size_each, unsigned int *random_nums, unsigned long *r_index);
+
+/**
+ * @brief Shuffles the powers used by hash function.
+ * @param k 
+ */
+bool shuffle_powers(key k);
 #endif
