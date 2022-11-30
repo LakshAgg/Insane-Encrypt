@@ -13,6 +13,7 @@ bool iencrypt(key k, void *data, unsigned long size)
 
     if (!shuffle_powers(k))
         return false;
+    k->set_seed = false;
 
     // size of each row
     unsigned int size_each = calc_size_each(k) % size + 1;
@@ -65,6 +66,7 @@ bool idecrypt(key k, void *data, unsigned long size)
 
     if (!shuffle_powers(k))
         return false;
+    k->set_seed = false;
 
     // size of each row
     unsigned int size_each = calc_size_each(k) % size + 1;

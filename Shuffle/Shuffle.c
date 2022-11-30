@@ -1,4 +1,5 @@
 #include "Shuffle.h"
+#include "../Map/Map.h"
 #include "../NumGen/Powers.h"
 #include "InternalShuffle.c"
 
@@ -102,6 +103,7 @@ bool shuffle_powers(key k)
     unsigned long num_req = 256;
     unsigned int random_nums[num_req];
 
+    map(k, powers, 256 * sizeof(unsigned long));
     gen_random_numbers(k, random_nums, num_req);
     unsigned long random_index = 0;
 
